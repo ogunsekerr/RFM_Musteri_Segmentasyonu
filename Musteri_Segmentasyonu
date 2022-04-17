@@ -54,13 +54,7 @@ print(df[df["Quantity"] < 0].head())
     541910 gözlem var.
     ++++++++++++++++++++
    >>>>df.describe().T<<<<
-   Sayısal değişkenlerin özet istatistiklerine baktığımızda 
-   Quantity :  Satış mikatrı -80995 diyor. Vahit hoca rahatsız olmuştu. Bizde rahatsızız bu durumdan tabi.
-               Şaka bir yana eksi miktarda adet olamayacağı için bizim dikkatimizi çekti.
-               Çeyrekliklere baktığımızda ise %50-%75-max arası yine evlere şenlik dikkat çekici...
-   Price :     Ortalama-9.5 std-218 min değer- -80995 arızalı bir veri belli işimiz var. 
-               Ama kıyamadım seriside var tabii. 
-
+ 
    '''
 
 
@@ -118,21 +112,9 @@ df.head()
 
 
 # 1. Recency, Frequency ve Monetary tanımlarını yapınız.
-
-
-#Recencey: En son tarih skoru. Burada 1 en yakın, 5 en uzak  tarih olmakta.
-#Frequency:  Alışveriş sıklığı skoru.
-#Monetary: Value: Bıraktığı parasal değer.
-
-
-
 #2. Müşteri özelinde Recency, Frequency ve Monetary metriklerini groupby, agg ve lambda ile hesaplayınız.
 #3. Hesapladığınız metrikleri rfm isimli bir değişkene atayınız.
 # Not 1: recency değeri için bugünün tarihini (2011, 12, 11) olarak kabul ediniz.
-
-#InvoiceDate --> Recency'e ulaşabilmek için
-#Invoice --> Frequency'e ulaşabilmek için
-#TotalPrice --> Monetary'e ulaşabilmek için
 
 
 df["InvoiceDate"].max()
@@ -143,10 +125,6 @@ rfm = df.groupby('Customer ID').agg({'InvoiceDate': lambda InvoiceDate: (today_d
                                      'TotalPrice': lambda TotalPrice: TotalPrice.sum()})
 
 rfm.head()
-
-#Bir müşteriye gittik. Agg invoice date dediğimizde müşterinin yaptığı bütün alışveriş içinden en son alışveriş tarihini seçtik
-#Frequency bulabilmek için müşterinin bütün Invoice larına gittik. Kaç tane unique fatura kesilmiş buna eriştik.
-#Monetary erişmek için tüm faturalardaki toplam harcamasına eriştiğimiz TotalPrice'ı kullnadık
 
 
 
@@ -177,12 +155,6 @@ rfm["recency_score"] = pd.qcut(rfm['recency'], 5, labels=[5, 4, 3, 2, 1])
 
 rfm["frequency_score"] = pd.qcut(rfm['frequency'].rank(method="first"), 5, labels=[1, 2, 3, 4, 5])
 
-'''
-#Frekansta 1 değerlerinin çok olduğunu düşünelim. 100 tane mesela. 
-# Bunu 5 parçaya böleceğiz. İlk aralıkta 20 tane 1. İkinci aralığa geçtiğimizde hala 1'ler devam ediyorsa bu rpoblem yaratıyor.
-# Çünkü aralıkların unique olmasını istiyor fonksiyon. Bunun için rank(method="first") kullanılır. Böylece bu 1 değerleri 2 olarak etiketleyebiliyor.
-'''
-
 rfm["monetary_score"] = pd.qcut(rfm['monetary'], 5, labels=[1, 2, 3, 4, 5])
 
 
@@ -194,11 +166,6 @@ rfm.head()
 
 
 
-
-
-#Oluşan 2 farklı değişkenin değerini tek bir değişken olarak ifade ediniz ve RFM_SCORE olarak kaydediniz.
-#Örneğin;
-#Ayrı ayrı değişkenlerde sırasıyla 5, 2 olan recency_score, frequency_score skorlarını RFM_SCORE değişkeni isimlendirmesi ile oluşturunuz.
 
 rfm["RFM_SCORE"] = (rfm['recency_score'].astype(str) +
                     rfm['frequency_score'].astype(str))
@@ -239,10 +206,6 @@ rfm.head()
 rfm[["segment", "recency", "frequency", "monetary"]].groupby("segment").agg(["mean", "count"])
 
 
-
-#Recencey: En son tarih skoru. Burada 1 en yakın, 5 en uzak  tarih olmakta.
-#Frequency:  Alışveriş sıklığı skoru.
-#Monetary: Value: Bıraktığı parasal değer.
 
 
 #NEW COSTUMER:##
