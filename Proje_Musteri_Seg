@@ -63,18 +63,11 @@ print(df[df["Quantity"] < 0].head())
 df.isnull().any()
 df.isnull().sum()
 
-print("##################### NA #####################")
-print('Veri setinde', df.isnull().sum()[df.isnull().sum() > 0].index[0], 'degiskeninden',
-      df.isnull().sum()[df.isnull().sum() > 0][0], df.isnull().sum()[df.isnull().sum() > 0].index[1], 'degiskeninden',
-      df.isnull().sum()[df.isnull().sum() > 0][1] ,'eksik veri bulunmaktadir')
 
 #4. Eksik gözlemleri verisetinden çıkartınız.Çıkarma işleminde ‘inplace=True’ parametresini kullanınız.
 
 df.dropna(inplace=True)
 
-# Assignment ile de yapılabilirdi.
-# Satırda, herhangi bir veya daha fazla sütuna ait değer boş ise satırı drop eder.
-# Drop işleminden sonra boş değerin olmaması beklenir.
 
 #5. Eşsiz ürün sayısı kaçtır?
 
@@ -91,7 +84,7 @@ df["Description"].value_counts().head()
 
 df.groupby("Invoice").agg({"Quantity": "sum"}).head(5).sort_values("Quantity", ascending=False)
 df.head()
-#burada ascending false dememizin bir sebebi nedir acaba ?
+
 
 #8. Faturalardaki‘C’iptal edilen işlemleri göstermektedir.İptal edilen işlemleri veri setinden çıkartınız.
 
@@ -203,9 +196,9 @@ rfm.head()
 #GOREV 5:Önemli bulduğunuz 3 segmenti seçiniz. Bu üç segmenti;
 #Hem aksiyon kararları açısından, hem de segmentlerin yapısı açısından (ortalama RFM değerleri) yorumlayınız.
 ##########################################################################################
+
+
 rfm[["segment", "recency", "frequency", "monetary"]].groupby("segment").agg(["mean", "count"])
-
-
 
 
 #NEW COSTUMER:##
